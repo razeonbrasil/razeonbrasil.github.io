@@ -2,15 +2,209 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RAZEON | Site Oficial</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080c0a">
+<meta name="description" content="RAZEON: creatina monohidratada 300g. Disciplina, desempenho e qualidade de vida.">
+<title>RAZEON | Disciplina que transforma resultados</title>
+<style>
+:root{
+  --bg:#080c0a;--card:#111a15;
+  --green:#63e69a;--white:#f5f7f5;
+  --muted:#a3b1a8;--line:#29372e;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif;line-height:1.6}
+a{text-decoration:none;color:inherit}
+header{position:sticky;top:0;z-index:5;background:#080c0aef;border-bottom:1px solid var(--line)}
+nav{max-width:1150px;margin:auto;padding:17px 6%;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{font-size:25px;font-weight:1000;letter-spacing:-1.5px;color:var(--green);font-style:italic}
+nav .links{display:flex;gap:20px;font-size:13px}
+nav .links a:hover{color:var(--green)}
+section{padding:80px 6%}
+.container{max-width:1150px;margin:auto}
+.hero{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:55px;min-height:650px}
+.eyebrow{color:var(--green);font-size:12px;letter-spacing:3px;font-weight:800;text-transform:uppercase}
+h1{font-size:clamp(44px,6vw,83px);line-height:1.03;letter-spacing:-3px;margin:20px 0}
+h1 span,h2 span{color:var(--green)}
+h2{font-size:clamp(30px,4vw,48px);letter-spacing:-1.5px;line-height:1.15;margin:15px 0 25px}
+p{color:var(--muted)}
+.hero p{max-width:500px;font-size:17px}
+.hero img{width:100%;border-radius:16px;object-fit:cover;max-height:570px}
+.btn{display:inline-flex;justify-content:center;align-items:center;padding:15px 25px;border-radius:6px;background:var(--green);color:#07120a;font-weight:800;font-size:14px;margin:8px 8px 8px 0;transition:.2s}
+.btn:hover{transform:translateY(-2px);background:#9af5ba}
+.btn.secondary{background:transparent;color:var(--white);border:1px solid #6c8474}
+.btn.secondary:hover{border-color:var(--green)}
+.strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:24px 6%;display:flex;justify-content:center;gap:50px;flex-wrap:wrap;font-size:13px;font-weight:700;letter-spacing:1px}
+.strip span{color:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:35px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:30px}
+.card .num{font-size:34px;color:var(--green);font-weight:900}
+.card h3{font-size:19px;margin:12px 0}
+.card p{font-size:14px}
+.dark{background:#0d140f}
+.product{display:grid;grid-template-columns:1fr 1fr;gap:65px;align-items:center}
+.product-photo{background:#fff;border-radius:16px;padding:20px}
+.product-photo img{display:block;width:100%;max-height:530px;object-fit:contain}
+.price{font-size:40px;font-weight:900;color:var(--green);margin:20px 0 5px}
+.small{font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:30px 0}
+.stat{border-left:2px solid var(--green);padding-left:15px}
+.stat strong{display:block;font-size:25px}
+.stat small{color:var(--muted)}
+.report{background:#132218;border:1px solid #2b5b3d;padding:35px;border-radius:15px;margin-top:30px}
+.report strong{color:var(--green)}
+.center{text-align:center}
+.center p{max-width:650px;margin:15px auto}
+footer{border-top:1px solid var(--line);padding:35px 6%;text-align:center;font-size:13px}
+footer a{color:var(--green)}
+@media(max-width:750px){
+nav .links{gap:12px;font-size:11px}
+section{padding:55px 6%}
+.hero,.product{grid-template-columns:1fr;gap:25px}
+.hero{min-height:auto}
+.hero img{max-height:440px}
+h1{letter-spacing:-2px}
+.grid{grid-template-columns:1fr}
+.strip{gap:15px;justify-content:space-around}
+.stats{gap:10px}
+.stat strong{font-size:21px}
+.btn{width:100%;margin:7px 0}
+}
+</style>
 </head>
-<body style="background:#080c0a;color:white;text-align:center;font-family:Arial;padding:60px 20px">
-  <h1 style="color:#38c878">RAZEON</h1>
-  <h2>Disciplina que transforma resultados.</h2>
-  <p>Creatina Monohidratada | 300g</p>
-  <p>Saúde, desempenho e qualidade de vida.</p>
-  <a href="https://www.instagram.com/razeon.oficial/" style="color:#38c878">Instagram Oficial</a>
+<body>
+
+<header>
+<nav>
+<a class="logo" href="#">RAZEON</a>
+<div class="links">
+<a href="#sobre">Sobre</a>
+<a href="#produto">Produto</a>
+<a href="#qualidade">Qualidade</a>
+<a href="#contato">Contato</a>
+</div>
+</nav>
+</header>
+
+<main>
+<section>
+<div class="container hero">
+<div>
+<div class="eyebrow">RAZEON • CREATINA MONOHIDRATADA</div>
+<h1>DISCIPLINA QUE <span>TRANSFORMA</span> RESULTADOS.</h1>
+<p>Mais que suplementação. Um compromisso com sua evolução, sua rotina e sua qualidade de vida.</p>
+<a class="btn" href="#produto">CONHEÇA NOSSA CREATINA →</a>
+<a class="btn secondary" href="#sobre">NOSSA ESSÊNCIA</a>
+</div>
+<img src="image.png" alt="Creatina RAZEON em ambiente de academia">
+</div>
+</section>
+
+<div class="strip">
+<div><span>✦</span> DISCIPLINA</div>
+<div><span>✦</span> QUALIDADE</div>
+<div><span>✦</span> EVOLUÇÃO</div>
+<div><span>✦</span> CONSTÂNCIA</div>
+</div>
+
+<section id="sobre">
+<div class="container">
+<div class="eyebrow">A NOSSA ESSÊNCIA</div>
+<h2>NÃO É SÓ SOBRE <span>TREINAR.</span></h2>
+<p>A RAZEON nasceu com um propósito: fazer parte da rotina de pessoas que valorizam saúde, dedicação e evolução constante.</p>
+<p>Acreditamos que resultados são construídos todos os dias, dentro e fora da academia.</p>
+<div class="grid">
+<div class="card">
+<div class="num">01</div>
+<h3>Disciplina</h3>
+<p>A evolução começa com pequenas decisões repetidas com constância.</p>
+</div>
+<div class="card">
+<div class="num">02</div>
+<h3>Qualidade</h3>
+<p>Transparência sobre o produto e compromisso com a informação.</p>
+</div>
+<div class="card">
+<div class="num">03</div>
+<h3>Qualidade de vida</h3>
+<p>Suplementação como parte de uma rotina equilibrada, não apenas do treino.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="produto" class="dark">
+<div class="container product">
+<div class="product-photo">
+<img src="Creatina fundo branco.jpg" alt="Pote RAZEON Creatina Monohidratada 300g">
+</div>
+<div>
+<div class="eyebrow">CONHEÇA O PRODUTO</div>
+<h2>RAZEON <span>CREATINA</span> MONOHIDRATADA</h2>
+<p>Creatina monohidratada em pó, sem adição de açúcares e sem glúten, conforme informações do rótulo.</p>
+<div class="stats">
+<div class="stat"><strong>300g</strong><small>Conteúdo</small></div>
+<div class="stat"><strong>5g</strong><small>Porção</small></div>
+<div class="stat"><strong>60</strong><small>Porções</small></div>
+</div>
+<p>A creatina auxilia no aumento do desempenho físico durante exercícios repetidos de curta duração e alta intensidade, quando consumida conforme as orientações aplicáveis.</p>
+<div class="price">R$ 89,90</div>
+<div class="small">Preço de referência. Confira o valor e o frete na plataforma escolhida.</div>
+<a class="btn" target="_blank" rel="noopener noreferrer" href="https://vt.tiktok.com/ZS9fB1x2aNmvV-DVWxB/">COMPRAR NA TIKTOK SHOP ↗</a>
+<a class="btn secondary" target="_blank" rel="noopener noreferrer" href="https://www.mercadolivre.com.br/up/MLBU5703427821?matt_tool=38524122&amp;pdp_filters=item_id:MLB5487141341&amp;ua=F7TjkUlt53hctG9rnNwuQDufOWggKD3gvMEjrboMFHioTVQD#origin=share&amp;sid=share&amp;wid=MLB5487141341&amp;action=copy">COMPRAR NO MERCADO LIVRE ↗</a>
+</div>
+</div>
+</section>
+
+<section id="qualidade">
+<div class="container">
+<div class="eyebrow">QUALIDADE E TRANSPARÊNCIA</div>
+<h2>CONFIANÇA SE CONSTRÓI <span>COM DADOS.</span></h2>
+<p>Conheça os resultados apresentados no certificado de análise do lote 0740926L da creatina RAZEON.</p>
+<div class="grid">
+<div class="card">
+<div class="num">100,2%</div>
+<h3>Teor em base seca</h3>
+<p>Resultado informado no certificado. Especificação: 98% a 102%.</p>
+</div>
+<div class="card">
+<div class="num">&lt;50</div>
+<h3>Creatinina (ppm)</h3>
+<p>Resultado abaixo do limite especificado de 100 ppm.</p>
+</div>
+<div class="card">
+<div class="num">✓</div>
+<h3>Análises microbiológicas</h3>
+<p>Resultados reportados como conformes no certificado.</p>
+</div>
+</div>
+<div class="report">
+<h3>Certificado de análise disponível</h3>
+<p>Lote 0740926L • Validade 15/09/2028</p>
+<p>Os resultados apresentados se referem ao lote identificado. Consulte o documento para verificar os métodos, especificações e observações.</p>
+<a class="btn" href="Laudo Creatina.pdf" target="_blank" rel="noopener noreferrer">CONSULTAR LAUDO COMPLETO ↗</a>
+</div>
+</div>
+</section>
+
+<section id="contato" class="dark">
+<div class="container center">
+<div class="eyebrow">FAÇA PARTE DA NOSSA HISTÓRIA</div>
+<h2>EVOLUÇÃO É UMA <span>ESCOLHA DIÁRIA.</span></h2>
+<p>Acompanhe nossos conteúdos, conheça nossa proposta e entre em contato para oportunidades de parceria.</p>
+<a class="btn" href="https://www.instagram.com/razeon.oficial/" target="_blank" rel="noopener noreferrer">INSTAGRAM @RAZEON.OFICIAL ↗</a>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="logo">RAZEON</div>
+<p>Disciplina que transforma resultados.</p>
+<p>© 2026 RAZEON. Todos os direitos reservados.</p>
+<a href="https://www.instagram.com/razeon.oficial/">@razeon.oficial</a>
+</footer>
+
 </body>
 </html>
