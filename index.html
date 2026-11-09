@@ -417,5 +417,214 @@ h1{letter-spacing:-2px}
   }
 </script>
 
+<style>
+  #calculadora-razeon {
+    background: #080d0b;
+    color: #f5f7f5;
+    padding: 80px 20px;
+  }
+
+  #calculadora-razeon .calc-container {
+    max-width: 850px;
+    margin: 0 auto;
+  }
+
+  #calculadora-razeon .calc-tag {
+    color: #59e59b;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+  }
+
+  #calculadora-razeon h2 {
+    color: white;
+    font-size: clamp(32px, 6vw, 56px);
+    line-height: 1.1;
+    margin: 0 0 20px;
+  }
+
+  #calculadora-razeon h2 span {
+    color: #59e59b;
+  }
+
+  #calculadora-razeon .calc-description {
+    color: #a7b3aa;
+    line-height: 1.7;
+    margin-bottom: 30px;
+  }
+
+  #calculadora-razeon .calc-card {
+    background: #111914;
+    border: 1px solid #25382c;
+    border-radius: 18px;
+    padding: 30px;
+  }
+
+  #calculadora-razeon label {
+    display: block;
+    color: #f5f7f5;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  #calculadora-razeon input {
+    width: 100%;
+    box-sizing: border-box;
+    background: #080d0b;
+    color: white;
+    border: 1px solid #355442;
+    border-radius: 10px;
+    padding: 17px;
+    font-size: 20px;
+    outline: none;
+  }
+
+  #calculadora-razeon input:focus {
+    border-color: #59e59b;
+  }
+
+  #calculadora-razeon .calc-button {
+    width: 100%;
+    background: #59e59b;
+    color: #07110a;
+    border: none;
+    border-radius: 10px;
+    padding: 17px;
+    margin-top: 18px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  #calculadora-razeon .calc-result {
+    display: none;
+    background: #14251a;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 25px;
+  }
+
+  #calculadora-razeon .calc-number {
+    color: #59e59b;
+    font-size: 42px;
+    font-weight: 900;
+    margin: 10px 0;
+  }
+
+  #calculadora-razeon .calc-muted {
+    color: #a7b3aa;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 650px) {
+    #calculadora-razeon {
+      padding: 60px 18px;
+    }
+
+    #calculadora-razeon .calc-card {
+      padding: 20px;
+    }
+  }
+</style>
+
+<section id="calculadora-razeon">
+  <div class="calc-container">
+
+    <div class="calc-tag">FERRAMENTAS RAZEON</div>
+
+    <h2>CALCULADORA DE <span>CREATINA.</span></h2>
+
+    <p class="calc-description">
+      Faça uma simulação com base no seu peso e
+      descubra a duração estimada de um pote RAZEON.
+    </p>
+
+    <div class="calc-card">
+      <label for="peso-razeon">Seu peso (kg)</label>
+
+      <input
+        type="number"
+        id="peso-razeon"
+        min="20"
+        max="300"
+        step="0.1"
+        placeholder="Ex.: 89"
+      >
+
+      <button
+        class="calc-button"
+        type="button"
+        onclick="calcularCreatinaRazeon()"
+      >
+        CALCULAR
+      </button>
+
+      <div
+        class="calc-result"
+        id="resultado-razeon"
+        aria-live="polite"
+      >
+        <div class="calc-muted">
+          Simulação pela fórmula de 0,07 g/kg:
+        </div>
+
+        <div class="calc-number" id="dose-razeon"></div>
+
+        <p class="calc-muted" id="duracao-razeon"></p>
+
+        <p class="calc-muted">
+          Para adultos saudáveis, uma faixa geral
+          frequentemente utilizada é de 3 a 5 g por dia.
+          O cálculo por peso não determina uma dose
+          individual nem significa que quantidades
+          maiores tragam mais benefícios.
+        </p>
+      </div>
+
+      <p class="calc-muted" style="margin-top:20px">
+        Ferramenta educativa. Não substitui orientação
+        profissional, especialmente para menores de idade,
+        gestantes ou pessoas com condições de saúde.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  function calcularCreatinaRazeon() {
+    const campo = document.getElementById('peso-razeon');
+    const peso = Number(campo.value);
+    const resultado = document.getElementById('resultado-razeon');
+
+    if (
+      campo.value.trim() === '' ||
+      !Number.isFinite(peso) ||
+      peso < 20 ||
+      peso > 300
+    ) {
+      alert('Informe um peso válido entre 20 e 300 kg.');
+      resultado.style.display = 'none';
+      return;
+    }
+
+    const dose = peso * 0.07;
+    const dias = Math.floor(300 / dose);
+
+    document.getElementById('dose-razeon').textContent =
+      dose.toLocaleString('pt-BR', {
+        maximumFractionDigits: 2
+      }) + ' g/dia';
+
+    document.getElementById('duracao-razeon').textContent =
+      'Nessa quantidade, um pote RAZEON de 300 g ' +
+      'duraria aproximadamente ' + dias + ' dias.';
+
+    resultado.style.display = 'block';
+  }
+</script>
+
 </body>
 </html>
