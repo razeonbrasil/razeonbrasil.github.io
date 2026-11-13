@@ -158,6 +158,149 @@ h1{letter-spacing:-2px}
 </div>
 </section>
 
+<!-- CALCULADORA DE FRETE RAZEON -->
+<section id="frete-razeon" style="background:#080d0b;padding:65px 6%;">
+  <div style="max-width:850px;margin:auto;">
+
+    <div style="color:#59e59b;font-size:12px;font-weight:800;letter-spacing:3px;">
+      ENTREGA RAZEON
+    </div>
+
+    <h2>CALCULE SEU <span>FRETE.</span></h2>
+    <p>Consulte as opções de entrega para sua região.</p>
+
+    <div style="background:#111914;border:1px solid #25382c;border-radius:18px;padding:25px;">
+
+      <label for="cep-frete" style="display:block;margin-bottom:10px;font-weight:bold;">
+        Digite seu CEP
+      </label>
+
+      <input
+        id="cep-frete"
+        type="text"
+        inputmode="numeric"
+        maxlength="9"
+        placeholder="00000-000"
+        style="width:100%;padding:16px;background:#080d0b;color:white;border:1px solid #355442;border-radius:9px;font-size:18px;"
+      >
+
+      <button
+        id="botao-frete"
+        type="button"
+        onclick="calcularFreteRazeon()"
+        style="width:100%;padding:16px;margin-top:15px;background:#59e59b;color:#07110a;border:0;border-radius:9px;font-weight:900;cursor:pointer;"
+      >
+        CALCULAR FRETE
+      </button>
+
+      <div id="resultado-frete" aria-live="polite" style="margin-top:20px;"></div>
+
+      <p style="font-size:12px;margin-top:18px;">
+        Valores e prazos estimados para um pote.
+        O frete final será confirmado na plataforma de compra.
+      </p>
+
+    </div>
+  </div>
+</section>
+
+<script>
+async function calcularFreteRazeon() {
+  const campo = document.getElementById("cep-frete");
+  const resultado = document.getElementById("resultado-frete");
+  const botao = document.getElementById("botao-frete");
+
+  const cep = campo.value.replace(/\D/g, "");
+
+  if (!/^\d{8}$/.test(cep)) {
+    resultado.textContent = "Digite um CEP válido com 8 números.";
+    return;
+  }
+
+  botao.disabled = true;
+  botao.textContent = "CONSULTANDO...";
+  resultado.textContent = "Buscando opções de entrega...";
+
+  try {
+    const resposta = await fetch(
+      "https://razeon-checkout.mtdressonante2008.workers.dev/calcular-frete",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ cep })
+      }
+    );
+
+    if (!resposta.ok) {
+      throw new Error("Cotação indisponível");
+    }
+
+    const dados = await resposta.json();
+
+    if (!Array.isArray(dados.opcoes) || dados.opcoes.length === 0) {
+      resultado.textContent =
+        "Nenhuma opção de entrega disponível para esse CEP.";
+      return;
+    }
+
+    resultado.replaceChildren();
+
+    const titulo = document.createElement("p");
+    titulo.textContent = "OPÇÕES DE ENTREGA";
+    titulo.style.fontWeight = "bold";
+    titulo.style.color = "#59e59b";
+    resultado.appendChild(titulo);
+
+    const opcoes = [...dados.opcoes].sort(
+      (a, b) => Number(a.preco) - Number(b.preco)
+    );
+
+    for (const opcao of opcoes) {
+      const preco = Number(opcao.preco);
+      if (!Number.isFinite(preco) || preco < 0) continue;
+
+      const item = document.createElement("div");
+      item.style.cssText =
+        "display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0;border-bottom:1px solid #25382c;";
+
+      const detalhes = document.createElement("div");
+
+      const nome = document.createElement("strong");
+      nome.textContent = opcao.nome || opcao.transportadora || "Entrega";
+      nome.style.color = "#f5f7f5";
+
+      const prazo = document.createElement("div");
+      prazo.style.color = "#a7b3aa";
+      prazo.style.fontSize = "13px";
+      prazo.textContent = opcao.prazoDias == null
+        ? "Prazo a consultar"
+        : "Prazo estimado: " + opcao.prazoDias + " dia(s)";
+
+      const valor = document.createElement("strong");
+      valor.style.color = "#59e59b";
+      valor.style.whiteSpace = "nowrap";
+      valor.textContent = preco.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+
+      detalhes.append(nome, prazo);
+      item.append(detalhes, valor);
+      resultado.appendChild(item);
+    }
+
+  } catch (erro) {
+    resultado.textContent =
+      "Não foi possível consultar o frete agora. Tente novamente.";
+  } finally {
+    botao.disabled = false;
+    botao.textContent = "CALCULAR FRETE";
+  }
+}
+</script>
+
 <section id="qualidade">
 <div class="container">
 <div class="eyebrow">QUALIDADE E TRANSPARÊNCIA</div>
