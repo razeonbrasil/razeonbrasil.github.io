@@ -161,11 +161,70 @@ h1{letter-spacing:-2px}
 </div>
 
 <div class="small">Preço de referência. Confira o valor e o frete na plataforma escolhida.</div>
-<a class="btn" target="_blank" rel="noopener noreferrer" href="https://vt.tiktok.com/ZS9fB1x2aNmvV-DVWxB/">COMPRAR NA TIKTOK SHOP ↗</a>
+<a class="btn" href="#checkout-razeon">COMPRAR DIRETO NA RAZEON →</a>
+ <a class="btn secondary" target="_blank" rel="noopener noreferrer" href="https://vt.tiktok.com/ZS9fB1x2aNmvV-DVWxB/">COMPRAR NA TIKTOK SHOP ↗</a>
 <a class="btn secondary" target="_blank" rel="noopener noreferrer" href="https://www.mercadolivre.com.br/up/MLBU5703427821?matt_tool=38524122&amp;pdp_filters=item_id:MLB5487141341&amp;ua=F7TjkUlt53hctG9rnNwuQDufOWggKD3gvMEjrboMFHioTVQD#origin=share&amp;sid=share&amp;wid=MLB5487141341&amp;action=copy">COMPRAR NO MERCADO LIVRE ↗</a>
 </div>
 </div>
 </section>
+
+
+<!-- CHECKOUT RAZEON: PREVIA SEM PAGAMENTO -->
+<style>
+#checkout-razeon{background:#0b120e;padding:75px 6%;scroll-margin-top:75px}
+#checkout-razeon .checkout-wrap{max-width:950px;margin:auto}
+#checkout-razeon .checkout-panel{background:#111a15;border:1px solid #29372e;border-radius:16px;padding:30px;margin-top:25px}
+#checkout-razeon .checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#checkout-razeon label{display:block;color:#f5f7f5;font-weight:700;font-size:13px;margin-bottom:6px}
+#checkout-razeon input,#checkout-razeon select{width:100%;background:#080c0a;color:#f5f7f5;border:1px solid #355442;border-radius:8px;padding:13px;font-size:15px}
+#checkout-razeon input:focus,#checkout-razeon select:focus{outline:2px solid #63e69a;outline-offset:1px}
+#checkout-razeon .checkout-field{margin-bottom:16px}
+#checkout-razeon .checkout-total{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid #29372e;margin-top:15px;padding-top:20px}
+#checkout-razeon .checkout-total strong{color:#63e69a;font-size:28px}
+#checkout-razeon .checkout-disabled{width:100%;background:#395444;color:#d7e3d9;border:0;border-radius:8px;padding:17px;font-weight:800;cursor:not-allowed;margin-top:18px}
+#checkout-razeon .checkout-note{font-size:13px;color:#a3b1a8}
+@media(max-width:650px){#checkout-razeon .checkout-grid{grid-template-columns:1fr}#checkout-razeon .checkout-panel{padding:20px}}
+</style>
+<section id="checkout-razeon" aria-labelledby="checkout-titulo">
+ <div class="checkout-wrap">
+  <div class="eyebrow">COMPRA DIRETA • EM PREPARAÇÃO</div>
+  <h2 id="checkout-titulo">SEU PEDIDO <span>RAZEON.</span></h2>
+  <p>Estamos preparando a compra direta com entrega no seu endereço. Veja como será o formulário.</p>
+  <div class="checkout-panel">
+   <div class="checkout-field"><label for="checkout-quantidade">Escolha seu pedido</label>
+    <select id="checkout-quantidade"><option value="1">1 pote de 300 g — R$ 89,90</option><option value="2">2 potes de 300 g — R$ 169,90</option></select>
+   </div>
+   <form id="checkout-form" autocomplete="off">
+    <div class="checkout-grid">
+     <div class="checkout-field"><label for="checkout-nome">Nome completo</label><input id="checkout-nome" name="nome" type="text" placeholder="Seu nome" maxlength="120"></div>
+     <div class="checkout-field"><label for="checkout-email">E-mail</label><input id="checkout-email" name="email" type="email" placeholder="seu@email.com" maxlength="254"></div>
+     <div class="checkout-field"><label for="checkout-telefone">Telefone</label><input id="checkout-telefone" name="telefone" type="tel" placeholder="(21) 99999-9999" maxlength="20"></div>
+     <div class="checkout-field"><label for="checkout-cep">CEP</label><input id="checkout-cep" name="cep" inputmode="numeric" placeholder="00000-000" maxlength="9"></div>
+     <div class="checkout-field"><label for="checkout-rua">Rua / avenida</label><input id="checkout-rua" name="rua" maxlength="150"></div>
+     <div class="checkout-field"><label for="checkout-numero">Número</label><input id="checkout-numero" name="numero" maxlength="20"></div>
+     <div class="checkout-field"><label for="checkout-complemento">Complemento (opcional)</label><input id="checkout-complemento" name="complemento" maxlength="100"></div>
+     <div class="checkout-field"><label for="checkout-bairro">Bairro</label><input id="checkout-bairro" name="bairro" maxlength="100"></div>
+     <div class="checkout-field"><label for="checkout-cidade">Cidade</label><input id="checkout-cidade" name="cidade" maxlength="100"></div>
+     <div class="checkout-field"><label for="checkout-uf">Estado (UF)</label><input id="checkout-uf" name="uf" placeholder="RJ" maxlength="2"></div>
+    </div>
+   </form>
+   <div class="checkout-total"><span>Subtotal dos produtos</span><strong id="checkout-subtotal">R$ 89,90</strong></div>
+   <p class="checkout-note">Frete a calcular. O valor final dependerá do endereço, da quantidade e da embalagem.</p>
+   <button class="checkout-disabled" type="button" disabled>FINALIZAR COMPRA — EM BREVE</button>
+   <p class="checkout-note" role="status">Prévia apenas: os dados preenchidos não são enviados, armazenados nem utilizados para criar pedidos. Nenhum pagamento será iniciado.</p>
+  </div>
+ </div>
+</section>
+<script>
+(function(){
+ const quantidade=document.getElementById('checkout-quantidade');
+ const subtotal=document.getElementById('checkout-subtotal');
+ quantidade.addEventListener('change',()=>{
+  subtotal.textContent=quantidade.value==='2'?'R$ 169,90':'R$ 89,90';
+ });
+ document.getElementById('checkout-form').addEventListener('submit',e=>e.preventDefault());
+})();
+</script>
 
 <!-- CALCULADORA DE FRETE RAZEON -->
 <section id="frete-razeon" style="background:#080d0b;padding:65px 6%;">
