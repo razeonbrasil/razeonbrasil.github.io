@@ -234,16 +234,33 @@ h1{letter-spacing:-2px}
 </section>
 <script>
 (function(){
- const quantidade=document.getElementById('checkout-quantidade');
- const subtotal=document.getElementById('checkout-subtotal');
- quantidade.addEventListener('change',()=>{
-  subtotal.textContent=quantidade.value==='2'?'R$ 169,90':'R$ 89,90';
- });
+ 
+const quantidade = document.getElementById('checkout-quantidade');
+const subtotal = document.getElementById('checkout-subtotal');
+
+let descontoAplicado = 0;
+
+function atualizarSubtotal() {
+  const preco = quantidade.value === '2' ? 169.90 : 89.90;
+  const precoFinal = Math.round(preco * (1 - descontoAplicado / 100) * 100) / 100;
+
+  subtotal.textContent = precoFinal.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
+}
+
+quantidade.addEventListener('change', atualizarSubtotal);
+
   
 const campoCupom = document.getElementById('checkout-cupom');
 const botaoCupom = document.getElementById('checkout-aplicar-cupom');
 const mensagemCupom = document.getElementById('checkout-cupom-mensagem');
-
+campoCupom.addEventListener('input', () => {
+  descontoAplicado = 0;
+  atualizarSubtotal();
+  mensagemCupom.textContent = '';
+});
 botaoCupom.addEventListener('click', async () => {
   const cupom = campoCupom.value.trim().toUpperCase();
 
@@ -268,14 +285,20 @@ botaoCupom.addEventListener('click', async () => {
     const dados = await resposta.json();
 
     if (dados.valido) {
+    descontoAplicado = Number(dados.desconto_percentual);
+atualizarSubtotal();
       mensagemCupom.textContent =
         `Cupom aplicado: ${dados.desconto_percentual}% de desconto!`;
       mensagemCupom.style.color = '#63e69a';
     } else {
+      descontoAplicado = 0;
+atualizarSubtotal();
       mensagemCupom.textContent = 'Cupom inválido ou expirado.';
       mensagemCupom.style.color = '#ff7777';
     }
   } catch (erro) {
+    descontoAplicado = 0;
+atualizarSubtotal();
     mensagemCupom.textContent = 'Erro ao verificar cupom. Tente novamente.';
     mensagemCupom.style.color = '#ff7777';
   } finally {
