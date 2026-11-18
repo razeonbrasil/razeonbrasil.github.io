@@ -208,8 +208,25 @@ h1{letter-spacing:-2px}
      <div class="checkout-field"><label for="checkout-uf">Estado (UF)</label><input id="checkout-uf" name="uf" placeholder="RJ" maxlength="2"></div>
     </div>
    </form>
-   <div class="checkout-total"><span>Subtotal dos produtos</span><strong id="checkout-subtotal">R$ 89,90</strong></div>
-   <p class="checkout-note">Frete a calcular. O valor final dependerá do endereço, da quantidade e da embalagem.</p>
+   <div class="checkout-total"><span>Subtotal dos produtos</span><strong id="checkout-subtotal">R$ 89,90</strong></div>  
+
+<div class="checkout-field">
+  <label for="checkout-cupom">Cupom de desconto</label>
+  <div style="display:flex;gap:10px;">
+    <input
+      id="checkout-cupom"
+      type="text"
+      placeholder="Digite seu cupom"
+      maxlength="40"
+      style="flex:1;min-width:0;"
+    >
+    <button type="button" id="checkout-aplicar-cupom">
+      Aplicar
+    </button>
+  </div>
+  <p id="checkout-cupom-mensagem" class="checkout-note"></p>
+</div>
+  <p class="checkout-note">Frete a calcular. O valor final dependerá do endereço, da quantidade e da embalagem.</p>
    <button class="checkout-disabled" type="button" disabled>FINALIZAR COMPRA — EM BREVE</button>
    <p class="checkout-note" role="status">Prévia apenas: os dados preenchidos não são enviados, armazenados nem utilizados para criar pedidos. Nenhum pagamento será iniciado.</p>
   </div>
@@ -222,6 +239,50 @@ h1{letter-spacing:-2px}
  quantidade.addEventListener('change',()=>{
   subtotal.textContent=quantidade.value==='2'?'R$ 169,90':'R$ 89,90';
  });
+  
+const campoCupom = document.getElementById('checkout-cupom');
+const botaoCupom = document.getElementById('checkout-aplicar-cupom');
+const mensagemCupom = document.getElementById('checkout-cupom-mensagem');
+
+botaoCupom.addEventListener('click', async () => {
+  const cupom = campoCupom.value.trim().toUpperCase();
+
+  if (!cupom) {
+    mensagemCupom.textContent = 'Digite um cupom.';
+    return;
+  }
+
+  botaoCupom.disabled = true;
+  mensagemCupom.textContent = 'Verificando cupom...';
+
+  try {
+    const resposta = await fetch(
+      'https://razeon-checkout.mtdressonante2008.workers.dev/validar-cupom',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cupom })
+      }
+    );
+
+    const dados = await resposta.json();
+
+    if (dados.valido) {
+      mensagemCupom.textContent =
+        `Cupom aplicado: ${dados.desconto_percentual}% de desconto!`;
+      mensagemCupom.style.color = '#63e69a';
+    } else {
+      mensagemCupom.textContent = 'Cupom inválido ou expirado.';
+      mensagemCupom.style.color = '#ff7777';
+    }
+  } catch (erro) {
+    mensagemCupom.textContent = 'Erro ao verificar cupom. Tente novamente.';
+    mensagemCupom.style.color = '#ff7777';
+  } finally {
+    botaoCupom.disabled = false;
+  }
+});
+
  document.getElementById('checkout-form').addEventListener('submit',e=>e.preventDefault());
 })();
 </script>
