@@ -73,6 +73,7 @@ h1{letter-spacing:-2px}
 .btn{width:100%;margin:7px 0}
 }
 </style>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -168,8 +169,7 @@ h1{letter-spacing:-2px}
 </div>
 </section>
 
-
-<!-- CHECKOUT RAZEON: PREVIA SEM PAGAMENTO -->
+<!-- CHECKOUT RAZEON: REGISTRO DE PEDIDO SEM PAGAMENTO -->
 <style>
 #checkout-razeon{background:#0b120e;padding:75px 6%;scroll-margin-top:75px}
 #checkout-razeon .checkout-wrap{max-width:950px;margin:auto}
@@ -185,15 +185,22 @@ h1{letter-spacing:-2px}
 #checkout-razeon .checkout-note{font-size:13px;color:#a3b1a8}
 @media(max-width:650px){#checkout-razeon .checkout-grid{grid-template-columns:1fr}#checkout-razeon .checkout-panel{padding:20px}}
 </style>
+
 <section id="checkout-razeon" aria-labelledby="checkout-titulo">
  <div class="checkout-wrap">
-  <div class="eyebrow">COMPRA DIRETA • EM PREPARAÇÃO</div>
+  <div class="eyebrow">PEDIDO DIRETO • SEM COBRANÇA ONLINE</div>
   <h2 id="checkout-titulo">SEU PEDIDO <span>RAZEON.</span></h2>
-  <p>Estamos preparando a compra direta com entrega no seu endereço. Veja como será o formulário.</p>
+  <p>Registre seu interesse de compra. Nossa equipe confirmará a entrega e as próximas etapas. Nenhum pagamento será cobrado aqui.</p>
+
   <div class="checkout-panel">
-   <div class="checkout-field"><label for="checkout-quantidade">Escolha seu pedido</label>
-    <select id="checkout-quantidade"><option value="1">1 pote de 300 g — R$ 89,90</option><option value="2">2 potes de 300 g — R$ 169,90</option></select>
+   <div class="checkout-field">
+    <label for="checkout-quantidade">Escolha seu pedido</label>
+    <select id="checkout-quantidade">
+     <option value="1">1 pote de 300 g — R$ 89,90</option>
+     <option value="2">2 potes de 300 g — R$ 169,90</option>
+    </select>
    </div>
+
    <form id="checkout-form" autocomplete="off">
     <div class="checkout-grid">
      <div class="checkout-field"><label for="checkout-nome">Nome completo</label><input id="checkout-nome" name="nome" type="text" placeholder="Seu nome" maxlength="120"></div>
@@ -207,34 +214,48 @@ h1{letter-spacing:-2px}
      <div class="checkout-field"><label for="checkout-cidade">Cidade</label><input id="checkout-cidade" name="cidade" maxlength="100"></div>
      <div class="checkout-field"><label for="checkout-uf">Estado (UF)</label><input id="checkout-uf" name="uf" placeholder="RJ" maxlength="2"></div>
     </div>
-   </form>
-   <div class="checkout-total"><span>Subtotal dos produtos</span><strong id="checkout-subtotal">R$ 89,90</strong></div>  
 
-<div class="checkout-field">
-  <label for="checkout-cupom">Cupom de desconto</label>
-  <div style="display:flex;gap:10px;">
-    <input
-      id="checkout-cupom"
-      type="text"
-      placeholder="Digite seu cupom"
-      maxlength="40"
-      style="flex:1;min-width:0;"
-    >
-    <button type="button" id="checkout-aplicar-cupom">
-      Aplicar
+    <div class="checkout-total">
+     <span>Subtotal dos produtos</span>
+     <strong id="checkout-subtotal">R$ 89,90</strong>
+    </div>
+
+    <div class="checkout-field">
+     <label for="checkout-cupom">Cupom de desconto</label>
+     <div style="display:flex;gap:10px;">
+      <input id="checkout-cupom" type="text" placeholder="Digite seu cupom" maxlength="40" style="flex:1;min-width:0;">
+      <button type="button" id="checkout-aplicar-cupom">Aplicar</button>
+     </div>
+     <p id="checkout-cupom-mensagem" class="checkout-note"></p>
+    </div>
+
+    <p class="checkout-note">Frete a calcular. O valor final dependerá do endereço, da quantidade e da embalagem.</p>
+
+    <div class="checkout-field" style="margin-top:22px;">
+     <label>Verificação de segurança</label>
+     <div class="cf-turnstile"
+          data-sitekey="0x4AAAAAAGIyQxYfbAMeISrh"
+          data-theme="dark"></div>
+    </div>
+
+    <button id="checkout-enviar"
+            class="checkout-disabled"
+            type="submit"
+            style="cursor:pointer;background:#63e69a;color:#07120a;">
+     REGISTRAR PEDIDO — SEM PAGAMENTO
     </button>
-  </div>
-  <p id="checkout-cupom-mensagem" class="checkout-note"></p>
-</div>
-  <p class="checkout-note">Frete a calcular. O valor final dependerá do endereço, da quantidade e da embalagem.</p>
-   <button class="checkout-disabled" type="button" disabled>FINALIZAR COMPRA — EM BREVE</button>
-   <p class="checkout-note" role="status">Prévia apenas: os dados preenchidos não são enviados, armazenados nem utilizados para criar pedidos. Nenhum pagamento será iniciado.</p>
+
+    <p id="checkout-status" class="checkout-note" role="status" aria-live="polite">
+     Ao registrar, seus dados serão enviados à RAZEON para atendimento e organização do pedido. Nenhum pagamento será iniciado.
+    </p>
+   </form>
   </div>
  </div>
 </section>
+
 <script>
 (function(){
- 
+
 const quantidade = document.getElementById('checkout-quantidade');
 const subtotal = document.getElementById('checkout-subtotal');
 
@@ -252,15 +273,16 @@ function atualizarSubtotal() {
 
 quantidade.addEventListener('change', atualizarSubtotal);
 
-  
 const campoCupom = document.getElementById('checkout-cupom');
 const botaoCupom = document.getElementById('checkout-aplicar-cupom');
 const mensagemCupom = document.getElementById('checkout-cupom-mensagem');
+
 campoCupom.addEventListener('input', () => {
   descontoAplicado = 0;
   atualizarSubtotal();
   mensagemCupom.textContent = '';
 });
+
 botaoCupom.addEventListener('click', async () => {
   const cupom = campoCupom.value.trim().toUpperCase();
 
@@ -285,20 +307,20 @@ botaoCupom.addEventListener('click', async () => {
     const dados = await resposta.json();
 
     if (dados.valido) {
-    descontoAplicado = Number(dados.desconto_percentual);
-atualizarSubtotal();
+      descontoAplicado = Number(dados.desconto_percentual);
+      atualizarSubtotal();
       mensagemCupom.textContent =
         `Cupom aplicado: ${dados.desconto_percentual}% de desconto!`;
       mensagemCupom.style.color = '#63e69a';
     } else {
       descontoAplicado = 0;
-atualizarSubtotal();
+      atualizarSubtotal();
       mensagemCupom.textContent = 'Cupom inválido ou expirado.';
       mensagemCupom.style.color = '#ff7777';
     }
   } catch (erro) {
     descontoAplicado = 0;
-atualizarSubtotal();
+    atualizarSubtotal();
     mensagemCupom.textContent = 'Erro ao verificar cupom. Tente novamente.';
     mensagemCupom.style.color = '#ff7777';
   } finally {
@@ -306,7 +328,102 @@ atualizarSubtotal();
   }
 });
 
- document.getElementById('checkout-form').addEventListener('submit',e=>e.preventDefault());
+const checkoutForm = document.getElementById('checkout-form');
+const enviar = document.getElementById('checkout-enviar');
+const statusPedido = document.getElementById('checkout-status');
+
+const endpointPedido =
+  'https://razeon-checkout.mtdressonante2008.workers.dev/criar-pedido-publico';
+
+checkoutForm.addEventListener('submit', async (evento) => {
+  evento.preventDefault();
+  if (enviar.disabled) return;
+
+  const token =
+    checkoutForm.querySelector('[name="cf-turnstile-response"]')?.value || '';
+
+  if (!token) {
+    statusPedido.textContent =
+      'Conclua a verificação de segurança antes de registrar o pedido.';
+    statusPedido.style.color = '#ff9999';
+    return;
+  }
+
+  const campo = (id) =>
+    document.getElementById('checkout-' + id).value.trim();
+
+  const dados = {
+    quantidade: Number(quantidade.value),
+    nome: campo('nome'),
+    email: campo('email'),
+    telefone: campo('telefone'),
+    cep: campo('cep'),
+    rua: campo('rua'),
+    numero: campo('numero'),
+    complemento: campo('complemento'),
+    bairro: campo('bairro'),
+    cidade: campo('cidade'),
+    uf: campo('uf'),
+    cupom: campo('cupom').toUpperCase(),
+    modalidadeEntrega: 'a_definir',
+    turnstileToken: token
+  };
+
+  if (!dados.nome || !dados.email || !dados.telefone ||
+      !dados.cep || !dados.rua || !dados.numero ||
+      !dados.bairro || !dados.cidade || !dados.uf) {
+    statusPedido.textContent =
+      'Preencha todos os campos obrigatórios para registrar o pedido.';
+    statusPedido.style.color = '#ff9999';
+    return;
+  }
+
+  enviar.disabled = true;
+  enviar.textContent = 'REGISTRANDO PEDIDO...';
+  statusPedido.textContent = 'Enviando seu pedido com segurança...';
+  statusPedido.style.color = '#a3b1a8';
+
+  try {
+    const resposta = await fetch(endpointPedido, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dados)
+    });
+
+    const resultado = await resposta.json().catch(() => ({}));
+
+    if (!resposta.ok || !resultado.sucesso) {
+      throw new Error(
+        resultado.erro || 'Não foi possível registrar seu pedido.'
+      );
+    }
+
+    statusPedido.textContent =
+      'Pedido registrado! Número: ' + resultado.pedidoId +
+      '. Nossa equipe confirmará a entrega. Nenhum pagamento foi realizado.';
+
+    statusPedido.style.color = '#63e69a';
+
+    checkoutForm.reset();
+    quantidade.value = '1';
+    descontoAplicado = 0;
+    atualizarSubtotal();
+    mensagemCupom.textContent = '';
+
+    if (window.turnstile) window.turnstile.reset();
+
+  } catch (erro) {
+    statusPedido.textContent =
+      erro.message + ' Confira os dados e tente novamente.';
+    statusPedido.style.color = '#ff9999';
+
+    if (window.turnstile) window.turnstile.reset();
+
+  } finally {
+    enviar.disabled = false;
+    enviar.textContent = 'REGISTRAR PEDIDO — SEM PAGAMENTO';
+  }
+});
 })();
 </script>
 
@@ -453,49 +570,102 @@ async function calcularFreteRazeon() {
 }
 </script>
 
+<!-- QUALIDADE E TRANSPARÊNCIA RAZEON -->
 <section id="qualidade">
-<div class="container">
-<div class="eyebrow">QUALIDADE E TRANSPARÊNCIA</div>
-<h2>CONFIANÇA SE CONSTRÓI <span>COM DADOS.</span></h2>
-<p>Conheça os resultados apresentados no certificado de análise do lote 0740926L da creatina RAZEON.</p>
-<div class="grid">
-<div class="card">
-<div class="num">100,2%</div>
-<h3>Teor em base seca</h3>
-<p>Resultado informado no certificado. Especificação: 98% a 102%.</p>
-</div>
-<div class="card">
-<div class="num">&lt;50</div>
-<h3>Creatinina (ppm)</h3>
-<p>Resultado abaixo do limite especificado de 100 ppm.</p>
-</div>
-<div class="card">
-<div class="num">✓</div>
-<h3>Análises microbiológicas</h3>
-<p>Resultados reportados como conformes no certificado.</p>
-</div>
-</div>
-<div class="report">
-<h3>Certificado de análise disponível</h3>
-<p>Lote 0740926L • Validade 15/09/2028</p>
-<p>Os resultados apresentados se referem ao lote identificado. Consulte o documento para verificar os métodos, especificações e observações.</p>
-<a class="btn" href="Laudo Creatina.pdf" target="_blank" rel="noopener noreferrer">CONSULTAR LAUDO COMPLETO ↗</a>
-</div>
-</div>
+  <div class="container">
+
+    <div class="eyebrow">QUALIDADE E TRANSPARÊNCIA</div>
+
+    <h2>CONFIANÇA SE CONSTRÓI <span>COM DADOS.</span></h2>
+
+    <p>
+      Conheça os resultados apresentados no certificado
+      de análise do lote 0740926L da creatina RAZEON.
+    </p>
+
+    <div class="grid">
+
+      <div class="card">
+        <div class="num">100,2%</div>
+        <h3>Teor em base seca</h3>
+        <p>
+          Resultado informado no certificado.
+          Especificação: 98% a 102%.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="num">&lt;50</div>
+        <h3>Creatinina (ppm)</h3>
+        <p>
+          Resultado abaixo do limite especificado de 100 ppm.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="num">✓</div>
+        <h3>Análises microbiológicas</h3>
+        <p>
+          Resultados reportados como conformes no certificado.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="report">
+      <h3>Certificado de análise disponível</h3>
+
+      <p>Lote 0740926L • Validade 15/09/2028</p>
+
+      <p>
+        Os resultados apresentados se referem ao lote identificado.
+        Consulte o documento para verificar os métodos,
+        especificações e observações.
+      </p>
+
+      <a
+        class="btn"
+        href="Laudo Creatina.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        CONSULTAR LAUDO COMPLETO ↗
+      </a>
+    </div>
+
+  </div>
 </section>
 
+<!-- CONTATO RAZEON -->
 <section id="contato" class="dark">
-<div class="container center">
-<div class="eyebrow">FAÇA PARTE DA NOSSA HISTÓRIA</div>
-<h2>EVOLUÇÃO É UMA <span>ESCOLHA DIÁRIA.</span></h2>
-<p>Acompanhe nossos conteúdos, conheça nossa proposta e entre em contato para oportunidades de parceria.</p>
-<a class="btn" href="https://www.instagram.com/razeon.oficial/" target="_blank" rel="noopener noreferrer">INSTAGRAM @RAZEON.OFICIAL ↗</a>
-</div>
+  <div class="container center">
+
+    <div class="eyebrow">
+      FAÇA PARTE DA NOSSA HISTÓRIA
+    </div>
+
+    <h2>EVOLUÇÃO É UMA <span>ESCOLHA DIÁRIA.</span></h2>
+
+    <p>
+      Acompanhe nossos conteúdos, conheça nossa proposta
+      e entre em contato para oportunidades de parceria.
+    </p>
+
+    <a
+      class="btn"
+      href="https://www.instagram.com/razeon.oficial/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      INSTAGRAM @RAZEON.OFICIAL ↗
+    </a>
+
+  </div>
 </section>
+
 </main>
 
-
-
+<!-- TEAM RAZEON -->
 <style>
   #team-razeon {
     background: #080d0b;
@@ -629,8 +799,13 @@ async function calcularFreteRazeon() {
 
 <section id="team-razeon">
   <div class="team-container">
-    <div class="team-eyebrow">Pessoas que representam nossa essência</div>
+
+    <div class="team-eyebrow">
+      Pessoas que representam nossa essência
+    </div>
+
     <h2>TEAM <span>RAZEON.</span></h2>
+
     <p class="team-intro">
       Diferentes histórias, diferentes caminhos.
       A mesma disciplina para evoluir todos os dias.
@@ -638,75 +813,112 @@ async function calcularFreteRazeon() {
     </p>
 
     <div class="team-grid">
+
+      <!-- PARCEIRA FRAN -->
       <article class="team-card">
-        <img src="foto fran razeon na acad.jpeg"
-             alt="Fran, parceira da RAZEON"
-             loading="lazy">
+
+        <img
+          src="foto fran razeon na acad.jpeg"
+          alt="Fran, parceira da RAZEON"
+          loading="lazy"
+        >
+
         <div class="team-info">
+
           <h3>FRAN</h3>
           <p>Treino, dedicação e disciplina.</p>
+
           <div class="team-coupon">
             <span>MTODFRAN10</span>
-            <button type="button"
-              onclick="copiarCupomRazeon('MTODFRAN10', this)">
+
+            <button
+              type="button"
+              onclick="copiarCupomRazeon('MTODFRAN10', this)"
+            >
               COPIAR
             </button>
           </div>
+
           <div class="team-note">
             Cupom de 10% de desconto no TikTok Shop.
           </div>
-          <a class="team-shop"
-             href="https://vt.tiktok.com/ZS9fB1x2aNmvV-DVWxB/"
-             target="_blank"
-             rel="noopener noreferrer">
+
+          <a
+            class="team-shop"
+            href="https://vt.tiktok.com/ZS9fB1x2aNmvV-DVWxB/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             COMPRAR NO TIKTOK SHOP
           </a>
+
         </div>
       </article>
 
+      <!-- PARCEIRO DANIKE -->
       <article class="team-card">
-        <img src="foto danike no palco.jpeg"
-             alt="Danike, parceiro da RAZEON"
-             loading="lazy">
+
+        <img
+          src="foto danike no palco.jpeg"
+          alt="Danike, parceiro da RAZEON"
+          loading="lazy"
+        >
+
         <div class="team-info">
+
           <h3>DANIKE</h3>
           <p>Música, corrida e movimento.</p>
+
           <div class="team-coupon">
             <span>MTODDANIKE</span>
-            <button type="button"
-              onclick="copiarCupomRazeon('MTODDANIKE', this)">
+
+            <button
+              type="button"
+              onclick="copiarCupomRazeon('MTODDANIKE', this)"
+            >
               COPIAR
             </button>
           </div>
+
           <div class="team-note">
             Cupom de 10% de desconto no TikTok Shop.
           </div>
-          <a class="team-shop"
-             href="https://vt.tiktok.com/ZS9fB1x2aNmvV-DVWxB/"
-             target="_blank"
-             rel="noopener noreferrer">
+
+          <a
+            class="team-shop"
+            href="https://vt.tiktok.com/ZS9fB1x2aNmvV-DVWxB/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             COMPRAR NO TIKTOK SHOP
           </a>
+
         </div>
       </article>
+
     </div>
   </div>
 </section>
 
+<!-- FUNÇÃO PARA COPIAR CUPONS -->
 <script>
   async function copiarCupomRazeon(cupom, botao) {
     try {
       await navigator.clipboard.writeText(cupom);
+
       botao.textContent = 'COPIADO!';
+
       setTimeout(() => {
         botao.textContent = 'COPIAR';
       }, 2000);
+
     } catch (erro) {
       window.prompt('Copie seu cupom:', cupom);
     }
   }
 </script>
 
+<!-- CALCULADORA DE CREATINA RAZEON -->
 <style>
   #calculadora-razeon {
     background: #080d0b;
@@ -822,7 +1034,9 @@ async function calcularFreteRazeon() {
 <section id="calculadora-razeon">
   <div class="calc-container">
 
-    <div class="calc-tag">FERRAMENTAS RAZEON</div>
+    <div class="calc-tag">
+      FERRAMENTAS RAZEON
+    </div>
 
     <h2>CALCULADORA DE <span>CREATINA.</span></h2>
 
@@ -832,6 +1046,7 @@ async function calcularFreteRazeon() {
     </p>
 
     <div class="calc-card">
+
       <label for="peso-razeon">Seu peso (kg)</label>
 
       <input
@@ -856,6 +1071,7 @@ async function calcularFreteRazeon() {
         id="resultado-razeon"
         aria-live="polite"
       >
+
         <div class="calc-muted">
           Simulação pela fórmula de 0,07 g/kg:
         </div>
@@ -871,6 +1087,7 @@ async function calcularFreteRazeon() {
           individual nem significa que quantidades
           maiores tragam mais benefícios.
         </p>
+
       </div>
 
       <p class="calc-muted" style="margin-top:20px">
@@ -878,8 +1095,8 @@ async function calcularFreteRazeon() {
         profissional, especialmente para menores de idade,
         gestantes ou pessoas com condições de saúde.
       </p>
-    </div>
 
+    </div>
   </div>
 </section>
 
@@ -914,14 +1131,20 @@ async function calcularFreteRazeon() {
 
     resultado.style.display = 'block';
   }
-  
 </script>
+
+<!-- RODAPÉ RAZEON -->
 <footer>
-<div class="logo">RAZEON</div>
-<p>Disciplina que transforma resultados.</p>
-<p>© 2026 RAZEON. Todos os direitos reservados.</p>
-<a href="https://www.instagram.com/razeon.oficial/">@razeon.oficial</a>
+  <div class="logo">RAZEON</div>
+
+  <p>Disciplina que transforma resultados.</p>
+
+  <p>© 2026 RAZEON. Todos os direitos reservados.</p>
+
+  <a href="https://www.instagram.com/razeon.oficial/">
+    @razeon.oficial
+  </a>
 </footer>
-  
+
 </body>
 </html>
